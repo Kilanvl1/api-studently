@@ -25,3 +25,11 @@ class ProfileSerializer(serializers.ModelSerializer):
             profile = Profile.objects.create(**validated_data)
 
         return profile
+
+    def update(self, validated_data):
+        instance = Profile.objects.filter(email=validated_data["email"].lower()).first()
+        instance.has_booked_appointment = validated_data.get(
+            "has_booked_appointment", instance.has_booked_appointment
+        )
+        instance.save()
+        return instance
