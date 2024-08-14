@@ -25,4 +25,5 @@ profile_urls.register_viewset(router)
 urlpatterns = [
     path("", include(router.urls)),
     path("admin/", admin.site.urls),
+    path("", include("profiles.urls")),
 ]

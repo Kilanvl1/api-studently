@@ -5,31 +5,25 @@ from .models import Profile
 
 class ProfileSerializer(serializers.ModelSerializer):
     number_of_landingpage_visits = serializers.IntegerField(read_only=True)
+    email = serializers.EmailField(write_only=True)
 
     class Meta:
         model = Profile
         fields = [
+            "id",
             "name",
             "email",
             "has_booked_appointment",
             "number_of_landingpage_visits",
+            "age",
+            "is_student",
+            "is_dutch",
+            "is_EU",
+            "is_eligible",
+            "is_insured",
+            "has_insurance_benefit",
+            "is_working",
+            "is_living_at_home",
         ]
-
-    def create(self, validated_data):
-        validated_data["email"] = validated_data["email"].lower()
-        profile = Profile.objects.filter(email=validated_data["email"]).first()
-        if profile:
-            profile.number_of_landingpage_visits += 1
-            profile.save()
-        else:
-            profile = Profile.objects.create(**validated_data)
-
-        return profile
-
-    def update(self, validated_data):
-        instance = Profile.objects.filter(email=validated_data["email"].lower()).first()
-        instance.has_booked_appointment = validated_data.get(
-            "has_booked_appointment", instance.has_booked_appointment
-        )
-        instance.save()
-        return instance
+        read_only_fields = ["id"]
+        write_only_fields = ["email"]
