@@ -13,6 +13,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "email",
+            "session_replay_url",
             "has_booked_appointment",
             "number_of_landingpage_visits",
             "age",

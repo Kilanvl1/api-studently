@@ -19,8 +19,8 @@ class ProfileViewSet(
         profile = Profile.objects.filter(email=email).first()
 
         if profile:
-
             profile.number_of_landingpage_visits += 1
+            profile.session_replay_url = request.data.get("session_replay_url")
             profile.save()
             serializer = ProfileSerializer(profile)
             return Response(serializer.data, status=status.HTTP_200_OK)

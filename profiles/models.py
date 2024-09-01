@@ -5,6 +5,7 @@ from django.db import models
 class Profile(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
+    session_replay_url = models.URLField(null=True)
     has_booked_appointment = models.BooleanField(default=False)
     number_of_landingpage_visits = models.IntegerField(default=1)
     age = models.IntegerField(null=True)
