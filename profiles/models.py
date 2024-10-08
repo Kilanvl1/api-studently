@@ -4,7 +4,8 @@ from django.db import models
 # Create your models here.
 class Profile(models.Model):
     name = models.CharField(max_length=50)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, null=True)
+    phone_number = models.CharField(max_length=15, null=True)
     session_replay_url = models.URLField(null=True)
     has_booked_appointment = models.BooleanField(default=False)
     number_of_landingpage_visits = models.IntegerField(default=1)

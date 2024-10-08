@@ -4,8 +4,6 @@ from .models import Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    number_of_landingpage_visits = serializers.IntegerField(read_only=True)
-    email = serializers.EmailField(write_only=True)
 
     class Meta:
         model = Profile
@@ -13,6 +11,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "email",
+            "phone_number",
             "session_replay_url",
             "has_booked_appointment",
             "number_of_landingpage_visits",
@@ -26,5 +25,16 @@ class ProfileSerializer(serializers.ModelSerializer):
             "is_working",
             "is_living_at_home",
         ]
-        read_only_fields = ["id"]
-        write_only_fields = ["email"]
+
+    def validate_phone_number(self, value):
+        # Phone number should start with a + followed by country code digits, then a space, and then the phone number
+        if not value.startswith("+"):
+            raise serializers.ValidationError("Phone number should start with a +")
+
+        parts = value[1:].split(" ", 1)
+        if len(parts) != 2 or not parts[0].isdigit() or not parts[1].isdigit():
+            raise serializers.ValidationError(
+                "Phone number should be in the format: +country code phone number"
+            )
+
+        return value

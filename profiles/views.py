@@ -14,22 +14,15 @@ class ProfileViewSet(
     serializer_class = ProfileSerializer
 
     def create(self, request, *args, **kwargs):
-        request.data["email"] = request.data.get("email").lower()
         email = request.data.get("email")
-        profile = Profile.objects.filter(email=email).first()
+        if email:
+            request.data["email"] = email.lower()
 
-        if profile:
-            profile.number_of_landingpage_visits += 1
-            profile.session_replay_url = request.data.get("session_replay_url")
-            profile.save()
-            serializer = ProfileSerializer(profile)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            serializer = ProfileSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class IncrementPageVisitsView(generics.UpdateAPIView):
