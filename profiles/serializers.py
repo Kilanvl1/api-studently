@@ -26,7 +26,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "is_living_at_home",
         ]
 
-    def validate_phone_number(self, value):
+    """ def validate_phone_number(self, value):
         # Phone number should start with a + followed by country code digits, then a space, and then the phone number
         if not value.startswith("+"):
             raise serializers.ValidationError("Phone number should start with a +")
@@ -37,4 +37,4 @@ class ProfileSerializer(serializers.ModelSerializer):
                 "Phone number should be in the format: +country code phone number"
             )
 
-        return value
+        return value """
