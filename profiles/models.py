@@ -8,7 +8,6 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=15, null=True)
     session_replay_url = models.URLField(null=True)
     has_booked_appointment = models.BooleanField(default=False)
-    number_of_landingpage_visits = models.IntegerField(default=1)
     age = models.IntegerField(null=True)
     is_student = models.BooleanField(null=True)
     is_dutch = models.BooleanField(null=True)
@@ -22,6 +21,18 @@ class Profile(models.Model):
     @property
     def is_at_risk_of_insurance_fine(self):
         return self.is_working and not self.is_insured
+
+    @property
+    def is_lead(self):
+        return self.is_EU and self.is_eligible and not self.has_booked_appointment
+
+    @property
+    def benefit_amount(self):
+        if self.is_dutch:
+            earnings = "1,455.96" if self.is_living_at_home else "3,628.68"
+        else:
+            earnings = "3,628.68" if self.has_insurance_benefit else "5,104.68"
+        return earnings
 
     class Meta:
         verbose_name = "Profile"

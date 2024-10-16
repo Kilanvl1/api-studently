@@ -9,13 +9,12 @@ from .models import Profile
 class ProfileAdmin(admin.ModelAdmin):
     list_display = [
         "name",
-        "email",
-        "has_booked_appointment",
-        "number_of_landingpage_visits",
+        "phone_number",
+        "profile_status",
         "clickable_session_replay_url",
     ]
-    search_fields = ["name", "email"]
-    list_filter = ["has_booked_appointment", "number_of_landingpage_visits"]
+    search_fields = ["name", "phone_number"]
+    list_filter = ["has_booked_appointment"]
 
     def clickable_session_replay_url(self, obj):
         if obj.session_replay_url:
@@ -26,3 +25,13 @@ class ProfileAdmin(admin.ModelAdmin):
         return "No session replay found"
 
     clickable_session_replay_url.short_description = "Session Replay URL"
+
+    def profile_status(self, obj):
+        if obj.has_booked_appointment:
+            return format_html("<span style='color: green;'>Meeting booked</span>")
+        elif obj.is_lead:
+            return format_html("<span style='color: orange;'>Lead</span>")
+        elif not obj.is_eligible:
+            return format_html("<span style='color: purple;'>Semi-Lead</span>")
+        else:
+            return format_html("<span style='color: red;'>No-lead</span>")
