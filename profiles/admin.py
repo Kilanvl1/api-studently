@@ -31,7 +31,7 @@ class ProfileAdmin(admin.ModelAdmin):
             return format_html("<span style='color: green;'>Meeting booked</span>")
         elif obj.is_lead:
             return format_html("<span style='color: orange;'>Lead</span>")
-        elif not obj.is_eligible:
+        elif obj.is_eligible is False:
             return format_html("<span style='color: purple;'>Semi-Lead</span>")
         else:
             return format_html("<span style='color: red;'>No-lead</span>")
